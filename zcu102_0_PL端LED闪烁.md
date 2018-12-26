@@ -7,6 +7,8 @@
 
 ---
 
+本文首先说明了PL开发的完整流程，再对仿真和调试功能进行单独说明。
+
 # 建立工程
 
 启动Vivado，选择Create Project
@@ -232,9 +234,135 @@ create_clock -period 8.000 -name clk_125_input -waveform {0.000 4.000} [get_port
 
 # 生成并烧写
 
+在PROGRAM AND DEBUG下点击Generate Bitstream
 
+![1545778551515](assets/1545778551515.png)
+
+*根据xtp435 zcu102 software install and board setup的说明*，连接JTAG USB口，并且设置为JTAG加载之后，板卡上电
+
+在PROGRAM AND DEBUG的Open Hardware Manager内选择Open Target
+
+![1545779182239](assets/1545779182239.png)
+
+弹出菜单内选择Auto Connect
+
+进入HARDWARE MANAGER界面后，在Hardware窗口选择xczu9_0器件，右键单击选择Program Device
+
+![1545779406857](assets/1545779406857.png)
+
+在弹出的Program Device窗口选择生成的bit文件，并点击Program按钮
+
+![1545779493889](assets/1545779493889.png)
+
+完成烧写后，板上LED按照代码设计依次点亮
+
+![1545779743825](assets/1545779743825.png)
 
 # 仿真
 
+在Sources窗口选择Add Sources
+
+![1545734156599](assets/1545734156599.png)
+
+在Add Sources窗口选择Add or create simulation sources
+
+![1545783881858](assets/1545783881858.png)
+
+在下个步骤选择Create File
+
+![1545783913981](assets/1545783913981.png)
+
+在Create Source File窗口设置文件名
+
+![1545783942359](assets/1545783942359.png)
+
+完成后点击Finish按钮
+
+之后弹出的Define Module窗口用于指定模块端口，由于是仿真激励，直接点击OK
+
+![1545784618055](assets/1545784618055.png)
+
+在Sources窗口找到新建的仿真模块，双击打开
+
+![1545784683399](assets/1545784683399.png)
+
+修改后的仿真代码如下：
+
+```verilog
+module tb_pl_top(
+
+    );
+    
+    //建立差分时钟
+    reg clk_p = 1'b0;
+    wire clk_n;
+    assign clk_n = ~clk_p;
+    
+    //设置时钟周期为8ns
+    always #4 clk_p = ~clk_p;
+    
+    //定义led输出
+    wire [7:0] leds;
+    
+    //例化
+    pl_top u
+    (
+    .clk_p(clk_p), 
+    .clk_n(clk_n), 
+    .leds(leds)
+    );
+    
+endmodule
+```
+
+在Flow Navigator的SIMULATION中选择Run Simulation，在弹出菜单中选择Run Behavioral Simulation
+
+![1545785074102](assets/1545785074102.png)
+
+之后进入SIMULATION界面
+
+![1545786027313](assets/1545786027313.png)
+
+上方仿真波形是在修改设计代码中的计时长度后得到，否则仿真时间太长。
+
 # 调试
 
+此处的调试指上板调试，在FPGA运行中查看内部信号。
+
+在SYNTHESIS下首先选择Open Synthesized Design，再选择Set Up Debug
+
+![1545786170053](assets/1545786170053.png)
+
+在弹出的Set Up Debug窗口中添加信号，简单的方法是从Netlist窗口直接拖入
+
+若关注的信号没有在Netlist中出现，则可以在代码中信号定义之前添加 (* keep="true" *)原语
+
+```verilog
+(*keep="true"*) reg [26:0] cnt = 27'd0;
+```
+
+![1545786602387](assets/1545786602387.png)
+
+![1545786763296](assets/1545786763296.png)
+
+下一步骤中指定抓取信号的深度
+
+![1545786864128](assets/1545786864128.png)
+
+之后点击Finish完成设置
+
+在Netlist窗口可以发现添加的调试信号左侧出现了调试标记
+
+![1545786961854](assets/1545786961854.png)
+
+根据前述的说明重新生成bit文件后，打开烧写界面，在Program Device窗口可以发现自动添加的Debug文件
+
+![1545787904973](assets/1545787904973.png)
+
+点击Program烧写完成后自动打开调试界面
+
+![1545788248812](assets/1545788248812.png)
+
+抓取结果：
+
+![1545788283566](assets/1545788283566.png)

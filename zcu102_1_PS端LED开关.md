@@ -32,9 +32,9 @@ Diagram界面出现zynq模块
 
 ![1545813819586](assets/1545813819586.png)
 
-双击zynq模块打开配置窗口，在PS-PL Configuration页，关闭AXI HPM0 LPD
+双击zynq模块打开配置窗口，在PS-PL Configuration页，关闭AXI HPM0 FPD和AXI HPM1 FPD
 
-![1545803555939](assets/1545803555939.png)
+![1545871010837](assets/1545871010837.png)
 
 Diagram界面下，zynq模块变成如下
 

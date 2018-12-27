@@ -164,7 +164,7 @@ int main()
 
 ![1545891891404](assets/1545891891404.png)
 
-# UART由接收数据
+# UART接收数据
 
 新建uart_recv工程，使用Hello World模板
 

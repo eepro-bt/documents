@@ -335,7 +335,9 @@ endmodule
 
 在弹出的Set Up Debug窗口中添加信号，简单的方法是从Netlist窗口直接拖入
 
-若关注的信号没有在Netlist中出现，则可以在代码中信号定义之前添加 (* keep="true" *)原语
+若关注的信号没有在Netlist中出现，则可以在代码中信号定义之前添加` (* keep="true" *)`原语保持信号
+
+**或者用`(* mark_debug="true" *)`直接标记为调试信号**
 
 ```verilog
 (*keep="true"*) reg [26:0] cnt = 27'd0;

@@ -12,8 +12,8 @@ assets文件夹用于保存图片
 0.  pl led
 1.  ps led
 2.  ps uart
-3.  ps emio
-4.  axi gpio
+3.  ps emio，开关PL端8个LED，5个按钮，试验接收中断
+4.  axi gpio，开关PL端8个LED，5个按钮，试验中断
 5.  axi bram
 6.  ps读写DDR
 7.  pl通过axi_lite与ps通信：参考米联==s02_ch12==

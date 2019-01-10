@@ -1,0 +1,38 @@
+添加axi_gpio时可以使用板卡预定义的配置
+
+
+
+不加uart，不用helloworld
+
+建立空SDK工程
+
+在src文件夹添加main.c
+
+基础代码
+
+```c
+#include "xparameters.h"
+
+int main(void)
+{
+	return 0;
+}
+```
+
+使用bsp中的system.mss导入示例程序
+
+
+
+在xparameters.h中566行，对应bd中的address
+
+
+
+sdk相关API函数定义中的channel与vivado中IP设置的对应关系
+
+
+
+在按钮的axi gpio模块中使能中断
+
+在xparameters.h中比较有中断IP和无中断IP的差异interrupt present
+
+在689行出现中断号定义

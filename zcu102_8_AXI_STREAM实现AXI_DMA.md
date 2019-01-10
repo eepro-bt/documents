@@ -331,7 +331,7 @@ axi_dma不具备数据缓冲的能力，高速数据传输时PL很难完全配�
 -   module关键字后接#的方式声明parameter可以让parameter被Block Design识别，在Block Design双击模块可以对parameter进行数值设置
 -   无论输入输出端口都必须加上wire关键字声明
 
--   **上述代码第162行的cnt_burst与BURST_NUM_M1的比较不能在比较代码中用计算公式**
+-   **上述代码第163行的cnt_burst与BURST_NUM_M1的比较不能在比较代码中用计算公式**
     -   **使用(BURST_NUM-8'd1)进行比较，可以正确仿真，但是Block Design的解析可能对计算进行了扩位，导致比较永不成立**，无法出现Packet要求的tlast
     -   tlast不存在，会导致axi_dma进行s2mm传输时出现Transfer指令后虽然可以接收数据但是无法结束的情况（在dma的状态寄存器SR中出现DMAIntErr），参考<https://forums.xilinx.com/t5/Embedded-Processor-System-Design/AXI-DMA-with-custom-AXI-streaming-IP-in-Zynq/td-p/303917>
 

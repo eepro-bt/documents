@@ -126,3 +126,70 @@ zcu102板卡上电，在putty界面显示启动信息
 
 ![1548383057117](assets/1548383057117.png)
 
+由于在硬件设计中使能了PS模块的DP输出，可以连接zcu102板的DP输出接口至显示器，可以看到与putty界面相同的内容
+
+![1548386187808](assets/1548386187808.png)
+
+![1548386636742](assets/1548386636742.png)
+
+但是由于没有输入接口，putty实现的串口交互在显示器上并不显示
+
+# Linux程序
+
+在Vivado硬件工程中，由File菜单Lauch SDK
+
+建立新工程
+
+![1548394505894](assets/1548394505894.png)
+
+选择Hello World模板
+
+![1548394532599](assets/1548394532599.png)
+
+在src文件夹下打开helloworld.c文件，并且改为以下代码：
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    printf("Hello Petalinux\n");
+
+    return 0;
+}
+```
+
+编译完成后在Debug目录下生成了可执行文件hello_petalinux.elf
+
+![1548396127525](assets/1548396127525.png)
+
+将elf文件考入前文所述的SD卡中
+
+将SD卡插入zcu102板卡，重新上电启动PetaLinux系统
+
+登入root账号后，进入/dev查看SD卡设备
+
+-   cd /dev
+-   ls
+
+其中**mmcblk0p1设备即为当前SD卡**
+
+![1548396316613](assets/1548396316613.png)
+
+将SD卡挂载至/mnt目录，进入/mnt目录并打开
+
+-   mount /dev/mmcblk0p1 /mnt
+-   cd /mnt
+-   ls
+
+可以看到SD卡内的文件
+
+![1548396494848](assets/1548396494848.png)
+
+在命令行输入以下命令，则执行elf文件
+
+-   ./hello_petalinux.elf
+
+功能正确，打印出Hello Petalinux
+
+![1548396660022](assets/1548396660022.png)

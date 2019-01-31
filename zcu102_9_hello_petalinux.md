@@ -43,6 +43,8 @@
 6.  根据ug1144的Installation Requirements，在Ubuntu系统终端安装必须的系统组件（以tofrodos为例）
     -   安装：sudo apt-get install tofrodos
     -   查找：apt-cache search tofrodos*
+    -   **注意zlib1g安装需要使用：sudo apt-get install zlib1g:i386 zlib1g-dev**
+    -   **注意ncurses安装需要使用：sudo apt-get install libncurses5 libncurses5-dev**
 7.  在终端进入安装包所在路径，修改安装包权限
     -   sudo chmod 777 petalinux-v2018.2-final-installer.run
 8.  在主文件夹建立petalinux安装目标文件夹（**在ug1144中示例使用的是/opt路径，由于Ubuntu权限控制，安装及使用都不方便**），/home/bt/petalinux

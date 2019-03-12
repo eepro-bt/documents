@@ -28,6 +28,10 @@ GEM3的配置与ug1182一致
 
 ![1551358235366](assets/1551358235366.png)
 
+确保TTC 0已使能
+
+![1552372950680](assets/1552372950680.png)
+
 保存后依次运行Generate Output Products和Create HDL Wrapper
 
 在Flow Navigator中选择Generate Bitstream，完成后先Export Hardware，再Launch SDK

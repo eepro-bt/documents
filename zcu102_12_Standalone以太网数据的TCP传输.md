@@ -695,3 +695,23 @@ int main(void)
 
 ![1551839528891](assets/1551839528891.png)
 
+# 注意
+
+tcp_write发送数据之前一定要用tcp_sndbuf判断当前发送缓冲是否可以装下待发送数据
+
+**如果发送缓冲可用字节数目不足必须运行主循环中的以下代码才能更新tcp_sndbuf函数的返回值**
+
+```c
+if (TcpFastTmrFlag)
+{
+    tcp_fasttmr();
+    TcpFastTmrFlag = 0;
+}
+
+if (TcpSlowTmrFlag)
+{
+    tcp_slowtmr();
+    TcpSlowTmrFlag = 0;
+}
+```
+

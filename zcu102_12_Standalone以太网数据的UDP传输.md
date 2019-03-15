@@ -447,4 +447,5 @@ int main(void)
 
 # 注意
 
-试验过程中曾出现编译时无法找到lwip相关API函数定义的问题，始终没办法解决，最终删除工程重建才恢复正常。
+UDP Client的Connect没有实际的数据交换，仅仅是绑定远端IP和端口。因此，即使远端的UDP Server没有启动，Connect一样正确返回。
+

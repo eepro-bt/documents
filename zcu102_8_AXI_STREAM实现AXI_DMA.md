@@ -79,9 +79,9 @@ axi_dma用于实现axi_stream流传输的地址映射
 
 -   S_AXI_LITE：用于与PS端的AXI Master连接，接收PS的控制指令，执行DMA写入或者DMA接收
 -   S_AXIS_S2MM：axi_dma模块的写接口，将数据从PL发送给PS
--   S_AXIS_MM2S：axi_dma模块的读接口，将数据从PS送入PL
--   M_AXI_S2MM：与PS的AXI SLAVE连接，用于数据从PL发送给PS的传输
--   M_AXI_MM2S：与PS的AXI SLAVE连接，用于数据从PS送入PL的传输
+-   M_AXIS_MM2S：axi_dma模块的读接口，将数据从PS送入PL
+-   M_AXI_S2MM：与PS的AXI SLAVE连接，用于PL向PS写入数据
+-   M_AXI_MM2S：与PS的AXI SLAVE连接，用于PL读入PS数据
 -   s2mm_introut：完成一次数据从PL发送给PS的Transfer后产生的中断信号，连接PS的PL中断接口
 -   mm2s_introut：完成一次数据从PS送入PL的Transfer后产生的中断信号，连接PS的PL中断接口
 

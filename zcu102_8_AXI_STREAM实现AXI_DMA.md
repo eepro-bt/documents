@@ -115,7 +115,7 @@ axi_dma不具备数据缓冲的能力，高速数据传输时PL很难完全配�
 
 ![1546932323542](assets/1546932323542.png)
 
--   Enabele Packet Mode表示按Packet传输，见[AXI_STREAM的时序说明](#AXI_STREAM的时序)
+-   Enabele Packet Mode表示按Packet传输，见[AXI_STREAM的时序说明](#AXI_STREAM的时序)。**进入一个完整Packet之后才按相同的Burst数目输出Packet，在完成输入Packet之前不输出****
 -   Signal Porperties与FIFO出入数据的AXI接口对应就可以了
 -   TID，TDEST，TUSER暂不考虑
 

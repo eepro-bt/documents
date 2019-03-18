@@ -71,7 +71,7 @@ axi_dma用于实现axi_stream流传输的地址映射
 -   Micro DMA是简化的DMA，暂不研究
 
 -   **Width of Buffer Length Register是DMA的32位传输长度寄存器中用于表示一次传输（Transfer）字节数目的位数，上图配置为10，表示调用传输函数一次最大传输的数据量为2^10^-1字节**
--   Max Burst Size表示axi_dma模块所有AXI接口可接受的最大的Burst数目，只有小于该值的Burst数目的传输才能被axi_dma模块正确解析
+-   Max Burst Size表示axi_dma模块所有AXI接口可接受的最大的Burst数目，只有小于该值的Burst数目的传输才能被axi_dma模块正确解析。**在PS中一次transfer即为1个packet，只产生1个有效tlast，burst数目必须小于当前Max Burst Size的设置值**
 
 在Block Design中的axi_dma端口如下：
 
@@ -401,7 +401,7 @@ axi_dma不具备数据缓冲的能力，高速数据传输时PL很难完全配�
 #define MEM_BASE_ADDR		0x01000000
 #define TX_BUFFER_BASE		(MEM_BASE_ADDR + 0x00100000)
 #define RX_BUFFER_BASE		(MEM_BASE_ADDR + 0x00300000)
-#define TRANS_SIZE 128//发送字节数目，必须小于axi_dma模块IP配置的width of buffer length register对应的缓冲大小2^width-1
+#define TRANS_SIZE 128//发送字节数目，必须小于axi_dma模块IP配置的width of buffer length register对应的缓冲大小2^width-1，并且transfer的数据量即为一次AXI_Stream的packeto数据量
 
 u8 *TxBufferPtr = (u8*)TX_BUFFER_BASE;
 u8 *RxBufferPtr = (u8*)RX_BUFFER_BASE;

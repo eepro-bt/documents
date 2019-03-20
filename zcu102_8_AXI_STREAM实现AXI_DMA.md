@@ -115,7 +115,7 @@ axi_dma不具备数据缓冲的能力，高速数据传输时PL很难完全配�
 
 ![1546932323542](assets/1546932323542.png)
 
--   Enabele Packet Mode表示按Packet传输，见[AXI_STREAM的时序说明](#AXI_STREAM的时序)。**进入一个完整Packet之后才按相同的Burst数目输出Packet，在完成输入Packet之前不输出****
+-   Enabele Packet Mode表示按Packet传输，见[AXI_STREAM的时序说明](#AXI_STREAM的时序)。**进入一个完整Packet之后才按相同的Burst数目输出Packet，在完成输入Packet之前不输出。**如果写入端的Packet大于fifo数据容量，则会导致fifo写满也不输出数据，从而产生死锁。而且Packet Mode会产生至少1个Packet的时延，因此最好不要使能该模式
 -   Signal Porperties与FIFO出入数据的AXI接口对应就可以了
 -   TID，TDEST，TUSER暂不考虑
 
@@ -711,3 +711,9 @@ int main()
 4.  代码第239至250行，277至288行：传输完成有2种方式，用XAxiDma_Busy函数Poll轮询或者中断响应，根据实际需要选择使用。需要特别说明的是轮询方式无论中断是否使能，以及使能以后是否响应都可以正常工作
 5.  代码第218行和300行：Xil_DCacheFlushRange用于将cache中的数据flush冲入内存。之前没想到的是，**XAXIDMA_DEVICE_TO_DMA传输时数据首先会进入cache**
 6.  **注意：中断响应函数在debug模式下不会进入，只有run模式才能进入中断响应函数！！！！！**
+
+# 特别注意！！！！
+
+AXI_DMA模块即使配置为同时使能mm2s和s2mm，但是在PS调用API进行传输的时候，无论传输方向是否相同，必须完成前一个transfer才能执行下一个transfer
+
+transfer的API接口函数为异步操作，如果需要并行DMA传输，则有必要使用多个AXI_DMA

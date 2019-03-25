@@ -712,8 +712,8 @@ int main()
 5.  代码第218行和300行：Xil_DCacheFlushRange用于将cache中的数据flush冲入内存。之前没想到的是，**XAXIDMA_DEVICE_TO_DMA传输时数据首先会进入cache**
 6.  **注意：中断响应函数在debug模式下不会进入，只有run模式才能进入中断响应函数！！！！！**
 
-# 特别注意！！！！
+# 特别注意
 
-AXI_DMA模块即使配置为同时使能mm2s和s2mm，但是在PS调用API进行传输的时候，无论传输方向是否相同，必须完成前一个transfer才能执行下一个transfer
+-   AXI_DMA模块即使配置为同时使能mm2s和s2mm，但是在PS调用API进行传输的时候，无论传输方向是否相同，必须完成前一个transfer才能执行下一个transfer。由于transfer的API接口函数为异步操作，如果需要并行DMA传输，则有必要使用多个AXI_DMA
+-   如果使用XAxiDma_Busy函数用轮询的方式判断传输是否完成，需要注意的是**初始化之后没有任何传输之前，DMA模块会一直保持Busy状态**。因此不能在未发起任何传输的情况下用XAxiDma_Busy函数判断DMA是否处于空闲状态。
 
-transfer的API接口函数为异步操作，如果需要并行DMA传输，则有必要使用多个AXI_DMA

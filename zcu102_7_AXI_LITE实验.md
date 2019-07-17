@@ -30,9 +30,11 @@
 5.  master：收到bvalid将bready设1，下个时钟周期设0
 6.  slave：收到bready将bvalid设0
 
+注意：**在slave端，awready值为0情况下，master端的awvalid会保持至与wvalid同时有效；如果awready保持有效，则master端会先将awvalid有效，之后再将wvalid有效，不方便slave端处理。因此awready和wready值为0，只有收到master端的写操作才赋1值。**
+
 ## 读操作时序
 
-1.  master：设置arvalidy为1
+1.  master：设置arvalid为1
 2.  slave：收到arvalid将arready设1，下个时钟周期设0
 3.  slave：在arready arvalid同时为1的情况下，rvalid设1，axi_rresp设0有效
 4.  master：收到arready将arvalid设0

@@ -715,3 +715,12 @@ if (TcpSlowTmrFlag)
 }
 ```
 
+如果TCP传输有较高的延迟和带宽要求，可以打开BSP工程的配置窗口，按如下高亮处的数值修改默认的lwip配置
+
+![img](assets/lwip1.png)
+
+![img](assets/lwip2.png)
+
+![img](assets/lwip3.png)
+
+![img](assets/lwip4.png)

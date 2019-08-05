@@ -729,3 +729,7 @@ if (TcpSlowTmrFlag)
 
 ![img](assets/lwip4.png)
 
+# zcu102的GEM3只有a53_0和a53_1可以进行lwip网络通信
+
+具体原因不详
+

@@ -697,6 +697,8 @@ int main(void)
 
 # 注意
 
+## tcp_sndbuf的判断
+
 tcp_write发送数据之前一定要用tcp_sndbuf判断当前发送缓冲是否可以装下待发送数据
 
 **如果发送缓冲可用字节数目不足必须运行主循环中的以下代码才能更新tcp_sndbuf函数的返回值**
@@ -715,6 +717,8 @@ if (TcpSlowTmrFlag)
 }
 ```
 
+## 提升传输效率
+
 如果TCP传输有较高的延迟和带宽要求，可以打开BSP工程的配置窗口，按如下高亮处的数值修改默认的lwip配置
 
 ![img](assets/lwip1.png)
@@ -724,3 +728,4 @@ if (TcpSlowTmrFlag)
 ![img](assets/lwip3.png)
 
 ![img](assets/lwip4.png)
+

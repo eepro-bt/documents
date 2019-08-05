@@ -136,3 +136,40 @@ register_data = buf[2];
 register_data = (register_data << 8) | buf[3];
 ```
 
+# 特别注意
+
+**i2c接口在连续大数据量写读的情况下中间过程必须加入sleep/usleep函数的等待，否则会出现程序运行异常，可能是高层封装的函数没来得及释放资源**
+
+如果下方代码无间断连续写224个寄存器的话将导致lwip网络配置正确，但是无法连接，因此必须改成如下每4次写入等待1ms：
+
+```c
+int i2c_wr_nv(u16 addr, u16 data)
+{
+	u8 buf[4];//i2c发送数据缓冲
+	buf[0] = addr >> 8;
+	buf[1] = addr & 0xFF;
+	buf[2] = data >> 8;
+	buf[3] = data & 0xFF;
+
+	if (XIicPs_MasterSendPolled(&i2c1, buf, 4, SLAVE_ADDR_NV) != XST_SUCCESS)
+	{
+		return XST_FAILURE;
+	}
+	while (XIicPs_BusIsBusy(&i2c1))
+	{
+		//等待接口写入完成
+	}
+
+	return XST_SUCCESS;
+}
+
+for (int i = 0; i < 56; ++i)
+{
+	for (int j = 0; j < 4; ++j)
+	{
+		i2c_wr_nv(cfg_array[i*8+j].addr, cfg_array[i*8+j].data);
+	}
+	usleep(1000);
+}
+```
+

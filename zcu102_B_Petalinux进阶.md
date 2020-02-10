@@ -62,5 +62,9 @@ Device Drivers -> USB Supports
 
 
 
+20200119 15:13
 
+petalinux 安装 ubuntu
+
+https://blog.csdn.net/xingpenglu/article/details/82658361
 

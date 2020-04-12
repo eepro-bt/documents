@@ -386,6 +386,8 @@ endmodule
 
 ![1586507497494](Nios II 自定义组件开发.assets/1586507497494.png)
 
+**注意，在上图中 avalon_led_0 组件的地址范围是 0x0004_1000~0x0004_100f，对应自定义时配置的 4 位地址线。**
+
 在菜单中选择 System > Assign Base Addresses，之后选择 Generate > Generate HDL，生成 qsys 模块
 
 # 修改 Quartus 工程
@@ -449,7 +451,7 @@ endmodule
 
 int main()
 {
-	alt_u8* ptr_led = AVALON_LED_0_BASE+15;
+	alt_u8* ptr_led = AVALON_LED_0_BASE+15;//偏移地址 15 即为组件 HDL 中的地址值
 
 	while (1)
 	{

@@ -105,3 +105,62 @@
 >   sudo ./build/helloworld
 
 ![image-20200813131631786](ubuntu1804虚拟机安装dpdk开发环境.assets/image-20200813131631786.png)
+
+# 异常错误处理
+
+## 1GB 大页内存挂载
+
+前述运行结果中的错误
+
+>   No available hugepages reported in hugepages-1048576kB
+
+表示系统中的 1GB 大页内存未挂载
+
+打开 /etc/default/grub 文件，原文
+
+>   GRUB_CMDLINE_LINUX=""
+
+修改为以下：
+
+>GRUB_CMDLINE_LINUX="default_hugepagesz=1GB hugepagesz=1G hugepages=2"
+
+在终端中更新 grub 并重启，运行
+
+>   sudo update-grub
+>
+>   reboot
+
+重启后重新配置 dpdk 环境，运行 helloworld
+
+![image-20200814104644664](ubuntu1804虚拟机安装dpdk开发环境.assets/image-20200814104644664.png)
+
+## 虚拟网卡类型
+
+前述运行结果中的错误
+
+>   failed to init HW
+
+主要原因在于默认的 vmware 默认添加的网卡类型为 e1000，应当修改为 vmxnet3
+
+关闭虚拟机后，进入虚拟机文件目录，打开扩展名为 vmx 的配置文件
+
+原文
+
+>   ethernet1.virtualDev = "e1000"
+>
+>   ethernet2.virtualDev = "e1000"
+
+修改为
+
+>   ethernet1.virtualDev = "vmxnet3"
+>
+>   ethernet2.virtualDev = "vmxnet3"
+
+重启后重新配置 dpdk 环境，运行 helloworld
+
+![image-20200814112821779](ubuntu1804虚拟机安装dpdk开发环境.assets/image-20200814112821779.png)
+
+运行 skeleton
+
+![image-20200814112957289](ubuntu1804虚拟机安装dpdk开发环境.assets/image-20200814112957289.png)
+

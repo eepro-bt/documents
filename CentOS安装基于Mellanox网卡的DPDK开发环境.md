@@ -80,16 +80,23 @@ dpdk-19.11.3.tar.xz
 
 将下载得到的 DPDK 源码包解压
 
-进入解压后的文件夹，为添加 Mellanox 网卡的 MLX5 poll mode driver，==修改 config/defconfig_x86_64-native-linuxapp-gcc 文件==，在文件末尾加入一行：
-
->   CONFIG_RTE_LIBRTE_MLX5_PMD=y
+进入解压后的文件夹，添加 Mellanox 网卡的 MLX5 poll mode driver，并且设置编译为共享库
 
 ==修改 config/common_base 文件，编译生成 DPDK 接口的共享库==，将原文中
 
 >CONFIG_RTE_BUILD_SHARED_LIB=n
+
 修改为
 
 >   CONFIG_RTE_BUILD_SHARED_LIB=y
+
+原文中
+
+>CONFIG_RTE_LIBRTE_MLX5_PMD=n
+
+修改为
+
+>CONFIG_RTE_LIBRTE_MLX5_PMD=y
 
 ==打开 usertools/dpdk-devbind.py 文件，解决 Python 文本编码错误==
 
@@ -169,6 +176,16 @@ dpdk-19.11.3.tar.xz
 
 >   modprobe -a ib_uverbs mlx5_core mlx5_ib
 
+## 找不到网卡
+
+函数 rte_eth_dev_count_avail 返回 0 值，表示当前主机内没有支持 DPDK 的网卡，如果已经正确安装网卡，很可能的原因在于网卡没有没有连接网络
+
+根据手册，此函数的功能为：
+
+>   Get the number of ports which are usable for the application.
+
+未连接的网卡显然不是 usable
+
 ## 网卡无法打开
 
 `rte_eth_dev_start()`函数返回 -12 无法打开网卡，很可能的原因是系统 kernel 被更改，导致安装的驱动与当前系统不符合
@@ -242,4 +259,4 @@ line2 的 libraw_dpdk.so 为生成的共享库文件名
 
 在 Qt 工程中添加生成的 libraw_dpdk.so 库文件，以及 DPDK 编译输出库目录下的 libdpdk.so 库文件
 
-并且在调用 .h 文件时使用 `extern "C" {}` 包含 #include 声明
+并且在调用 .h 文件时使用 `extern "C" {}` 包含 #include 声明

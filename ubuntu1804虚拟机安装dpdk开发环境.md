@@ -156,11 +156,19 @@
 >
 >   ethernet2.virtualDev = "vmxnet3"
 
-重启后重新配置 dpdk 环境，运行 helloworld
+重启后重新配置 dpdk 环境==（包括绑定 igb_uio 驱动）==，运行 helloworld
 
 ![image-20200814112821779](ubuntu1804虚拟机安装dpdk开发环境.assets/image-20200814112821779.png)
 
 运行 skeleton
 
 ![image-20200814112957289](ubuntu1804虚拟机安装dpdk开发环境.assets/image-20200814112957289.png)
+
+## 共享库无法运行
+
+如果==修改 config/common_base 文件，编译生成 DPDK 接口的共享库==
+
+>   CONFIG_RTE_BUILD_SHARED_LIB=y
+
+则无论怎样在 Makefile 中指定 LDLIBS 包含的共享库都无法找到网卡
 
